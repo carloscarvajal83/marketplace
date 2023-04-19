@@ -4,11 +4,13 @@ import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const Navbar: React.FC<{}> = () => {
-  return (
+    const navigate = useNavigate();
+    return (
     <Box sx={{flexGrow: 1}}>
-        <AppBar position='fixed'>
+        <AppBar position='sticky'>
             <Toolbar>
                 <Container maxWidth="xl">
                     <Grid container direction="row" justifyContent="space-between" alignItems="center">
@@ -19,7 +21,7 @@ export const Navbar: React.FC<{}> = () => {
                         </Grid>
                         <Grid item>
                             <Stack spacing={2} direction="row">
-                                <Button variant='outlined'>Loggin</Button>
+                                <Button variant='outlined' onClick={()=>navigate("login")}>Login</Button>
                                 <Button variant='contained'>Register</Button>
                             </Stack>
                         </Grid>
