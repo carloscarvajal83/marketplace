@@ -1,5 +1,7 @@
-import { Button, Container, Grid, Paper, Box, Typography, TextField, Stack } from '@mui/material';
-import React, { useState } from 'react'
+import { Button, Container, Grid, Paper, Box, Typography, TextField } from '@mui/material';
+import React from 'react'
+import { useNotification } from '../../context/notification.context';
+import { LoginValidate } from '../../utils/validateform';
 
 type LoginType = {
   username: string;
@@ -7,7 +9,7 @@ type LoginType = {
 }
 
 export const LoginPage: React.FC<{}> = () => {
-  
+  const { getSuccess, getError } = useNotification();
   const [loginData, setloginData] = React.useState<LoginType>({
     username: "",
     password: "",
@@ -20,7 +22,11 @@ export const LoginPage: React.FC<{}> = () => {
 
   const handleSubmit = (e:React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(loginData);
+    LoginValidate.validate(loginData).then(() => {
+      getSuccess(JSON.stringify(loginData))
+    }).catch((error)=>{
+      getError(error.message);
+    });
   }
 
   return (
@@ -30,8 +36,8 @@ export const LoginPage: React.FC<{}> = () => {
           <Paper sx={{ padding:"1em", borderRadius: "0.5em"}}>
             <Typography variant="h4">Inicio de Session</Typography>
             <Box component="form" onSubmit={handleSubmit}>
-              <TextField onChange={dataLogin} name="username" type="text" fullWidth label="Email" sx={{mt:2, mb:1.5}} required/>
-              <TextField onChange={dataLogin} name="password" type="password" fullWidth label="Password" sx={{mt:1.5, mb:1.5}} required/>
+              <TextField onChange={dataLogin} name="username" type="text" fullWidth label="Email" sx={{mt:2, mb:1.5}}/>
+              <TextField onChange={dataLogin} name="password" type="password" fullWidth label="Password" sx={{mt:1.5, mb:1.5}}/>
               <Button fullWidth type='submit' variant='contained' sx={{mt:1.5, mb:3}}>Iniciar sesion</Button>
             </Box>
           </Paper>
